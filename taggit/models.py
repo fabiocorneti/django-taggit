@@ -1,19 +1,35 @@
+from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.generic import GenericForeignKey
 from django.db import models, IntegrityError
 from django.template.defaultfilters import slugify
 
+try:
+    from transmeta import TransMeta
+    TRANSMETA_AVAILABLE = True
+except:
+    TRANSMETA_AVAILABLE = False
 
 class Tag(models.Model):
+    if TRANSMETA_AVAILABLE:
+        __metaclass__ = TransMeta
+
     name = models.CharField(max_length=100)
     slug = models.SlugField(unique=True, max_length=100)
     
+    class Meta:
+        if TRANSMETA_AVAILABLE:
+            translate = ('name',)
+
     def __unicode__(self):
         return self.name
     
     def save(self, *args, **kwargs):
         if not self.pk and not self.slug:
-            self.slug = slug = slugify(self.name)
+            if TRANSMETA_AVAILABLE:
+                self.slug = slug = slugify(getattr(self, 'name_' + settings.LANGUAGE_CODE.lower()))
+            else:
+                self.slug = slug = slugify(self.name)
             i = 0
             while True:
                 try:

@@ -1,6 +1,7 @@
 from collections import defaultdict
 
 import django
+from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.db.models.related import RelatedObject
@@ -12,6 +13,11 @@ from taggit.forms import TagWidget
 from taggit.models import Tag, TaggedItem
 from taggit.utils import require_instance_manager
 
+try:
+    from transmeta import TransMeta
+    TRANSMETA_AVAILABLE = True
+except:
+    TRANSMETA_AVAILABLE = False
 
 class TaggableRel(ManyToManyRel):
     def __init__(self):
@@ -138,7 +144,12 @@ class _TaggableManager(models.Manager):
     def add(self, *tags):
         for tag in tags:
             if not isinstance(tag, Tag):
-                tag, _ = Tag.objects.get_or_create(name=tag)
+                if TRANSMETA_AVAILABLE:
+                    #NOTE: assumes that tags are always inserted using the default site language, proper i18n handling in the UI will be added later
+                    query = {'name_' + settings.LANGUAGE_CODE.lower(): tag}
+                    tag, _ = Tag.objects.get_or_create(**query)
+                else:
+                    tag, _ = Tag.objects.get_or_create(name=tag)
             TaggedItem.objects.get_or_create(object_id=self.object_id,
                 content_type=ContentType.objects.get_for_model(self.model), tag=tag)
 
