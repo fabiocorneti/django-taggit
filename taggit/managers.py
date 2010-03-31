@@ -8,6 +8,7 @@ from django.db.models.fields.related import ManyToManyRel
 from django.db.models.query_utils import QueryWrapper
 
 from taggit.forms import TagField
+from taggit.forms import TagWidget
 from taggit.models import Tag, TaggedItem
 from taggit.utils import require_instance_manager
 
@@ -85,10 +86,11 @@ class TaggableManager(object):
     def formfield(self, form_class=TagField, **kwargs):
         defaults = {
             "label": "Tags",
-            "help_text": "A comma seperated list of tags."
+            "help_text": "A comma seperated list of tags.",
+            "widget": TagWidget(attrs={'size': 50}),
         }
         defaults.update(kwargs)
-        return form_class(**kwargs)
+        return form_class(**defaults)
 
     def value_from_object(self, instance):
         if instance.pk:
