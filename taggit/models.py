@@ -3,6 +3,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.generic import GenericForeignKey
 from django.db import models, IntegrityError
 from django.template.defaultfilters import slugify
+from django.utils.translation import ugettext_lazy as _
 
 try:
     from transmeta import TransMeta
@@ -14,10 +15,12 @@ class Tag(models.Model):
     if TRANSMETA_AVAILABLE:
         __metaclass__ = TransMeta
 
-    name = models.CharField(max_length=100)
-    slug = models.SlugField(unique=True, max_length=100)
+    name = models.CharField(max_length=100, verbose_name=_(u"Name"))
+    slug = models.SlugField(unique=True, max_length=100, verbose_name=_(u"Slug"))
     
     class Meta:
+        verbose_name = _(u"Tag")
+        verbose_name_plural = _(u"Tags")
         if TRANSMETA_AVAILABLE:
             translate = ('name',)
 
@@ -42,11 +45,15 @@ class Tag(models.Model):
 
 
 class TaggedItem(models.Model):
-    object_id = models.IntegerField()
-    content_type = models.ForeignKey(ContentType, related_name="tagged_items")
+    object_id = models.IntegerField(verbose_name=_(u"Object ID"))
+    content_type = models.ForeignKey(ContentType, related_name="tagged_items", verbose_name=_(u"Content type"))
     content_object = GenericForeignKey()
     
-    tag = models.ForeignKey(Tag, related_name="items")
+    tag = models.ForeignKey(Tag, related_name="items", verbose_name=_(u"Tag"))
     
+    class Meta:
+        verbose_name = _(u"Tagged item")
+        verbose_name_plural = _(u"Tagged items")
+
     def __unicode__(self):
-        return "%s tagged with %s" % (self.content_object, self.tag)
+        return _("%(content_object)s tagged with %(tag)s") % {'content_object': self.content_object, 'tag': self.tag}

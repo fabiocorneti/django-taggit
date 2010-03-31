@@ -3,9 +3,8 @@ from taggit.models import Tag, TaggedItem
 
 class TaggedItemInline(admin.TabularInline):
     model = TaggedItem
-    list_display = ['get_absolute_url',]
 
 class TagAdmin(admin.ModelAdmin):
-    pass
+    inlines = [TaggedItemInline,]
 
 admin.site.register(Tag, TagAdmin)

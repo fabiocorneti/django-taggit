@@ -7,6 +7,7 @@ from django.db import models
 from django.db.models.related import RelatedObject
 from django.db.models.fields.related import ManyToManyRel
 from django.db.models.query_utils import QueryWrapper
+from django.utils.translation import ugettext_lazy as _
 
 from taggit.forms import TagField
 from taggit.forms import TagWidget
@@ -30,7 +31,7 @@ class TaggableRel(ManyToManyRel):
 
 
 class TaggableManager(object):
-    def __init__(self, verbose_name="Tags"):
+    def __init__(self, verbose_name=_("Tags")):
         self.rel = TaggableRel()
         self.verbose_name = verbose_name
         self.editable = True
