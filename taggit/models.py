@@ -86,7 +86,10 @@ class Tag(models.Model):
             translate = ('name',)
 
     def __unicode__(self):
-        return self.name
+        if self.context:
+            return u"%s:%s" % (self.context, self.name)
+        else:
+            return self.name
     
     def save(self, *args, **kwargs):
         if not self.pk and not self.slug:
