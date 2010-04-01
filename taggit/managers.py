@@ -7,18 +7,16 @@ from django.db import models
 from django.db.models.related import RelatedObject
 from django.db.models.fields.related import ManyToManyRel
 from django.db.models.query_utils import QueryWrapper
+from django.utils import translation
 from django.utils.translation import ugettext_lazy as _
 
 from taggit.forms import TagField
 from taggit.forms import TagWidget
-from taggit.models import Tag, TaggedItem
+from taggit.models import Tag
+from taggit.models import TagContext
+from taggit.models import TaggedItem
 from taggit.utils import require_instance_manager
-
-try:
-    from transmeta import TransMeta
-    TRANSMETA_AVAILABLE = True
-except:
-    TRANSMETA_AVAILABLE = False
+from taggit.utils import TRANSMETA_AVAILABLE
 
 class TaggableRel(ManyToManyRel):
     def __init__(self):
@@ -92,9 +90,9 @@ class TaggableManager(object):
 
     def formfield(self, form_class=TagField, **kwargs):
         defaults = {
-            "label": "Tags",
-            "help_text": "A comma seperated list of tags.",
-            "widget": TagWidget(attrs={'size': 50}),
+            "label": _(u"Tags"),
+            "help_text": _(u"A comma separated list of tags."),
+            "widget": TagWidget(attrs={'size': 50, 'class': 'tagwidget'}),
         }
         defaults.update(kwargs)
         return form_class(**defaults)
