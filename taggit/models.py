@@ -75,11 +75,13 @@ class Tag(models.Model):
         __metaclass__ = TransMeta
 
     name = models.CharField(max_length=100, verbose_name=_(u"Name"))
-    slug = models.SlugField(unique=True, max_length=100, verbose_name=_(u"Slug"))
-    
+    slug = models.SlugField(max_length=100, verbose_name=_(u"Slug"))
+    context = models.ForeignKey(TagContext, blank=True, null=True, verbose_name=_(u"Context"))
+
     class Meta:
         verbose_name = _(u"Tag")
         verbose_name_plural = _(u"Tags")
+        unique_together = ('slug', 'context')
         if TRANSMETA_AVAILABLE:
             translate = ('name',)
 
