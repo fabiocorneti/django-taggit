@@ -94,7 +94,7 @@ class Tag(models.Model):
     def save(self, *args, **kwargs):
         if not self.pk and not self.slug:
             if TRANSMETA_AVAILABLE:
-                self.slug = slug = slugify(getattr(self, 'name_' + settings.LANGUAGE_CODE.lower()))
+                self.slug = slug = slugify(getattr(self, 'name_' + translation.get_language().lower()))
             else:
                 self.slug = slug = slugify(self.name)
             i = 0
