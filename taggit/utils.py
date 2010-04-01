@@ -1,4 +1,18 @@
+from django.conf import settings
 from functools import wraps
+
+try:
+    from transmeta import TransMeta
+    TRANSMETA_AVAILABLE = True
+except:
+    TRANSMETA_AVAILABLE = False
+
+def default_language_fieldname( fieldname ):
+    """ Selects specific fieldname for default language """ 
+    if TRANSMETA_AVAILABLE:
+        return fieldname + '_' + settings.LANGUAGE_CODE.lower()
+    else:
+        return fieldname
 
 def parse_tags(tags):
     if tags is None:
