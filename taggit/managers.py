@@ -143,12 +143,22 @@ class _TaggableManager(models.Manager):
     def add(self, *tags):
         for tag in tags:
             if not isinstance(tag, Tag):
+                context = None
+                if ':' in tag:
+                    context, tag = tag.split(':', 1)
+                    if TRANSMETA_AVAILABLE:
+                        query = {'name_' + translation.get_language().lower(): context}
+                        context, _ = TagContext.objects.get_or_create(**query)
+                    else:
+                        context, _ = TagContext.objects.get_or_create(name=context)
                 if TRANSMETA_AVAILABLE:
-                    #NOTE: assumes that tags are always inserted using the default site language, proper i18n handling in the UI will be added later
-                    query = {'name_' + settings.LANGUAGE_CODE.lower(): tag}
+                    query = {
+                        'name_' + translation.get_language().lower(): tag,
+                        'context': context
+                    }
                     tag, _ = Tag.objects.get_or_create(**query)
                 else:
-                    tag, _ = Tag.objects.get_or_create(name=tag)
+                    tag, _ = Tag.objects.get_or_create(name=tag, context=context)
             TaggedItem.objects.get_or_create(object_id=self.object_id,
                 content_type=ContentType.objects.get_for_model(self.model), tag=tag)
 
