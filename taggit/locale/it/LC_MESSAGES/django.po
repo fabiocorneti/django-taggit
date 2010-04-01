@@ -7,49 +7,68 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-31 18:11+0200\n"
-"PO-Revision-Date: 2010-03-31 18:13+0100\n"
+"POT-Creation-Date: 2010-04-01 17:19+0200\n"
+"PO-Revision-Date: 2010-04-01 17:20+0100\n"
 "Last-Translator: Fabio Corneti <info@corneti.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: managers.py:34
-#: models.py:23
+#: managers.py:32
+#: managers.py:93
+#: models.py:83
 msgid "Tags"
 msgstr "Tag"
 
-#: models.py:18
+#: managers.py:94
+msgid "A comma separated list of tags."
+msgstr "Una lista di tag separati da virgola."
+
+#: models.py:45
+#: models.py:77
 msgid "Name"
 msgstr "Nome"
 
-#: models.py:19
+#: models.py:46
+#: models.py:78
 msgid "Slug"
 msgstr "Slug"
 
-#: models.py:22
-#: models.py:52
+#: models.py:49
+msgid "Tag context"
+msgstr "Contesto"
+
+#: models.py:50
+msgid "Tag contexts"
+msgstr "Contesti"
+
+#: models.py:79
+msgid "Context"
+msgstr "Contesto"
+
+#: models.py:82
+#: models.py:116
 msgid "Tag"
 msgstr "Tag"
 
-#: models.py:48
+#: models.py:112
 msgid "Object ID"
 msgstr "ID dell'oggetto"
 
-#: models.py:49
+#: models.py:113
 msgid "Content type"
 msgstr "Tipo di contenuto"
 
-#: models.py:55
+#: models.py:119
 msgid "Tagged item"
 msgstr "Oggetto con tag"
 
-#: models.py:56
+#: models.py:120
 msgid "Tagged items"
 msgstr "Oggetti con tag"
 
-#: models.py:59
+#: models.py:123
 #, python-format
 msgid "%(content_object)s tagged with %(tag)s"
 msgstr "%(content_object)s con tag %(tag)s"
