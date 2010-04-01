@@ -6,7 +6,7 @@ from taggit.utils import parse_tags
 class TagWidget(forms.TextInput):
     def render(self, name, value, attrs=None):
         if value is not None and not isinstance(value, basestring):
-            value = ", ".join(o.tag.name for o in value.select_related("tag"))
+            value = ", ".join(unicode(o.tag) for o in value.select_related("tag"))
         return super(TagWidget, self).render(name, value, attrs)
 
 class TagField(forms.CharField):
